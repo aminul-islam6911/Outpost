@@ -18,7 +18,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'15dce43f4b209c63d84c1ec17a1671e1301d3600e619a852f36fdb183e6f6488'>;
+  StorageHashBase<'3c51c601a2fec95b6402b5aa3ccd03e3c4fde108bc3098dc56451eea80a074cb'>;
 export type ExecutionHash =
   ExecutionHashBase<'2a649ca21e37c327bb108719071d20e493fc0076b7c1b5745d08ef24a0ae825a'>;
 export type ProfileHash =
@@ -238,6 +238,7 @@ export type FieldOutputTypes = {
       readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
       readonly id: CodecTypes['pg/text@1']['output'];
       readonly ownerId: CodecTypes['pg/text@1']['output'];
+      readonly prompt: CodecTypes['pg/text@1']['output'];
       readonly userId: CodecTypes['pg/text@1']['output'];
       readonly workspaceId: CodecTypes['pg/text@1']['output'] | null;
     };
@@ -285,6 +286,7 @@ export type FieldInputTypes = {
       readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
       readonly id: CodecTypes['pg/text@1']['input'];
       readonly ownerId: CodecTypes['pg/text@1']['input'];
+      readonly prompt: CodecTypes['pg/text@1']['input'];
       readonly userId: CodecTypes['pg/text@1']['input'];
       readonly workspaceId: CodecTypes['pg/text@1']['input'] | null;
     };
@@ -332,6 +334,7 @@ export type StorageColumnTypes = {
       readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
       readonly id: CodecTypes['pg/text@1']['output'];
       readonly ownerId: CodecTypes['pg/text@1']['output'];
+      readonly prompt: CodecTypes['pg/text@1']['output'];
       readonly userId: CodecTypes['pg/text@1']['output'];
       readonly workspaceId: CodecTypes['pg/text@1']['output'] | null;
     };
@@ -379,6 +382,7 @@ export type StorageColumnInputTypes = {
       readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
       readonly id: CodecTypes['pg/text@1']['input'];
       readonly ownerId: CodecTypes['pg/text@1']['input'];
+      readonly prompt: CodecTypes['pg/text@1']['input'];
       readonly userId: CodecTypes['pg/text@1']['input'];
       readonly workspaceId: CodecTypes['pg/text@1']['input'] | null;
     };
@@ -426,6 +430,7 @@ export namespace Models {
     createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
     id: CodecTypes['pg/text@1']['output'];
     ownerId: CodecTypes['pg/text@1']['output'];
+    prompt: CodecTypes['pg/text@1']['output'];
     userId: CodecTypes['pg/text@1']['output'];
     workspaceId: CodecTypes['pg/text@1']['output'] | null;
     user: public_User;
@@ -526,6 +531,12 @@ type ContractBase = Omit<
                   readonly many: false;
                 };
                 readonly ownerId: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly prompt: {
                   readonly dataType: 'pg/text';
                   readonly codecId: 'pg/text@1';
                   readonly nullable: false;
@@ -907,6 +918,10 @@ type ContractBase = Omit<
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
+              readonly prompt: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
               readonly userId: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
@@ -946,6 +961,7 @@ type ContractBase = Omit<
                 readonly createdAt: { readonly column: 'createdAt' };
                 readonly id: { readonly column: 'id' };
                 readonly ownerId: { readonly column: 'ownerId' };
+                readonly prompt: { readonly column: 'prompt' };
                 readonly userId: { readonly column: 'userId' };
                 readonly workspaceId: { readonly column: 'workspaceId' };
               };

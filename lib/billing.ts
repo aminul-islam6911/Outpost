@@ -2,7 +2,6 @@ import { clerkClient } from "@clerk/nextjs/server";
 import { prisma } from "./prisma";
 import { FREE_MONTHLY_PROMPTS } from "./plan-limits";
 
-
 // Paid prompt allowances come from Clerk plan features (checked in order), per member for team plans.
 const PROMPT_FEATURES = [
   { feature: "agent_prompts_2000", perMember: 2000 },
@@ -41,20 +40,18 @@ export async function getEntitlements(ownerId: string) {
         item.plan?.features.forEach((feature) => features.add(feature.slug));
       }
     }
-  } catch {
-
-  }
+  } catch {}
   const paid = PROMPT_FEATURES.find(({ feature }) => features.has(feature));
   let promptLimit = FREE_MONTHLY_PROMPTS;
   if (paid) {
     const members = isOrg
-    ? ((
-        await clerk.organizations.getOrganization({
+      ? ((
+          await clerk.organizations.getOrganization({
             organizationId: ownerId,
-            includeMembersCount : true,
-        })
-    ).membersCount ?? 1)
-    : 1;
+            includeMembersCount: true,
+          })
+        ).membersCount ?? 1)
+      : 1;
     promptLimit = paid.perMember * members;
   }
   return {
@@ -63,5 +60,5 @@ export async function getEntitlements(ownerId: string) {
     unlimitedWorkspaces: features.has("workspaces_unlimited"),
     publicSharing: features.has("public_sharing"),
     pdfExport: features.has("pdf_export"),
-  }
+  };
 }

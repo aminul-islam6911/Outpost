@@ -83,6 +83,7 @@ model AgentPrompt {
   // personal workspace. Clerk prefixes ids ("org_", "user_"), so the two never collide.
   ownerId     String
   userId      String
+  prompt      String
   workspaceId String?
   createdAt   DateTime   @default(now())
 

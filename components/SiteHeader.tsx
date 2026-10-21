@@ -68,7 +68,7 @@ const SiteHeader = () => {
         <Show when="signed-in">
           <OrganizationSwitcher
             afterCreateOrganizationUrl="/dashboard"
-            afterSelectOrganizationUrl="/dashboard"
+            afterSelectOrganizationUrl="/"
           />
           {isLandingPage ? (
             <Button asChild size="sm">

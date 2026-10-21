@@ -1,0 +1,1265 @@
+[
+  {
+    "id": "dropDefault.User.updatedAt",
+    "label": "Drop default on \"User\".\"updatedAt\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "updatedAt",
+        "table": "User"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"updatedAt\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "User",
+          "updatedAt"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "drop default on \"updatedAt\"",
+        "sql": "ALTER TABLE \"public\".\"User\" ALTER COLUMN \"updatedAt\" DROP DEFAULT"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"updatedAt\" has no default",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3 AND \"column_default\" IS NULL)) AS \"result\"",
+        "params": [
+          "public",
+          "User",
+          "updatedAt"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "dropCheckConstraint.Workspace.Workspace_status_check_c0eed61d",
+    "label": "Drop check constraint \"Workspace_status_check_c0eed61d\" on \"Workspace\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "checkConstraint",
+        "name": "Workspace_status_check_c0eed61d",
+        "table": "Workspace"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"Workspace_status_check_c0eed61d\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Workspace_status_check_c0eed61d",
+          "public",
+          "\"public\".\"Workspace\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "drop check constraint \"Workspace_status_check_c0eed61d\"",
+        "sql": "ALTER TABLE \"public\".\"Workspace\" DROP CONSTRAINT \"Workspace_status_check_c0eed61d\""
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"Workspace_status_check_c0eed61d\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Workspace_status_check_c0eed61d",
+          "public",
+          "\"public\".\"Workspace\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "column.public.AgentPrompt.workspaceId",
+    "label": "Add column \"workspaceId\" to \"AgentPrompt\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "workspaceId",
+        "table": "AgentPrompt"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"workspaceId\" is missing",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "AgentPrompt",
+          "workspaceId"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add column \"workspaceId\"",
+        "sql": "ALTER TABLE \"public\".\"AgentPrompt\" ADD COLUMN \"workspaceId\" text"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"workspaceId\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "AgentPrompt",
+          "workspaceId"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "column.public.Canvas.content",
+    "label": "Add column \"content\" to \"Canvas\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "content",
+        "table": "Canvas"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"content\" is missing",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Canvas",
+          "content"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add column \"content\"",
+        "sql": "ALTER TABLE \"public\".\"Canvas\" ADD COLUMN \"content\" json"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"content\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Canvas",
+          "content"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "column.public.Canvas.createdAt",
+    "label": "Add column \"createdAt\" to \"Canvas\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "createdAt",
+        "table": "Canvas"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"createdAt\" is missing",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Canvas",
+          "createdAt"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add column \"createdAt\"",
+        "sql": "ALTER TABLE \"public\".\"Canvas\" ADD COLUMN \"createdAt\" timestamptz DEFAULT (now()) NOT NULL"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"createdAt\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Canvas",
+          "createdAt"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "column.public.Doc.content",
+    "label": "Add column \"content\" to \"Doc\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "content",
+        "table": "Doc"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"content\" is missing",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Doc",
+          "content"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add column \"content\"",
+        "sql": "ALTER TABLE \"public\".\"Doc\" ADD COLUMN \"content\" json"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"content\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Doc",
+          "content"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "column.public.Doc.createdAt",
+    "label": "Add column \"createdAt\" to \"Doc\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "createdAt",
+        "table": "Doc"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"createdAt\" is missing",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Doc",
+          "createdAt"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add column \"createdAt\"",
+        "sql": "ALTER TABLE \"public\".\"Doc\" ADD COLUMN \"createdAt\" timestamptz DEFAULT (now()) NOT NULL"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"createdAt\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Doc",
+          "createdAt"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "column.public.Doc.yjsState",
+    "label": "Add column \"yjsState\" to \"Doc\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "yjsState",
+        "table": "Doc"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"yjsState\" is missing",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Doc",
+          "yjsState"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add column \"yjsState\"",
+        "sql": "ALTER TABLE \"public\".\"Doc\" ADD COLUMN \"yjsState\" bytea"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"yjsState\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Doc",
+          "yjsState"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "column.public.Workspace.createdAt",
+    "label": "Add column \"createdAt\" to \"Workspace\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "createdAt",
+        "table": "Workspace"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"createdAt\" is missing",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Workspace",
+          "createdAt"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add column \"createdAt\"",
+        "sql": "ALTER TABLE \"public\".\"Workspace\" ADD COLUMN \"createdAt\" timestamptz DEFAULT (now()) NOT NULL"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"createdAt\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Workspace",
+          "createdAt"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "column.public.Workspace.position",
+    "label": "Add column \"position\" to \"Workspace\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "position",
+        "table": "Workspace"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"position\" is missing",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Workspace",
+          "position"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add column \"position\"",
+        "sql": "ALTER TABLE \"public\".\"Workspace\" ADD COLUMN \"position\" float8 DEFAULT 0 NOT NULL"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"position\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Workspace",
+          "position"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "column.public.Workspace.shareToken",
+    "label": "Add column \"shareToken\" to \"Workspace\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "shareToken",
+        "table": "Workspace"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"shareToken\" is missing",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Workspace",
+          "shareToken"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add column \"shareToken\"",
+        "sql": "ALTER TABLE \"public\".\"Workspace\" ADD COLUMN \"shareToken\" text"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"shareToken\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Workspace",
+          "shareToken"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "column.AgentPrompt.ownerId",
+    "label": "Add column ownerId to AgentPrompt",
+    "summary": "Adds column ownerId to table AgentPrompt",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "AgentPrompt"
+      }
+    },
+    "operationClass": "additive",
+    "precheck": [
+      {
+        "description": "ensure column \"ownerId\" is missing",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "AgentPrompt",
+          "ownerId"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add column \"ownerId\"",
+        "sql": "ALTER TABLE \"public\".\"AgentPrompt\" ADD COLUMN \"ownerId\" text DEFAULT ('') NOT NULL"
+      },
+      {
+        "description": "drop temporary default from column \"ownerId\"",
+        "sql": "ALTER TABLE \"public\".\"AgentPrompt\" ALTER COLUMN \"ownerId\" DROP DEFAULT"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"ownerId\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "AgentPrompt",
+          "ownerId"
+        ]
+      },
+      {
+        "description": "verify column \"ownerId\" is NOT NULL",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3 AND \"is_nullable\" = $4)) AS \"result\"",
+        "params": [
+          "public",
+          "AgentPrompt",
+          "ownerId",
+          "NO"
+        ]
+      },
+      {
+        "description": "verify column \"ownerId\" has no default after temporary default removal",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3 AND \"column_default\" IS NOT NULL)) AS \"result\"",
+        "params": [
+          "public",
+          "AgentPrompt",
+          "ownerId"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "column.Canvas.updatedAt",
+    "label": "Add column updatedAt to Canvas",
+    "summary": "Adds column updatedAt to table Canvas",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "Canvas"
+      }
+    },
+    "operationClass": "additive",
+    "precheck": [
+      {
+        "description": "ensure column \"updatedAt\" is missing",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Canvas",
+          "updatedAt"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add column \"updatedAt\"",
+        "sql": "ALTER TABLE \"public\".\"Canvas\" ADD COLUMN \"updatedAt\" timestamptz DEFAULT ('epoch') NOT NULL"
+      },
+      {
+        "description": "drop temporary default from column \"updatedAt\"",
+        "sql": "ALTER TABLE \"public\".\"Canvas\" ALTER COLUMN \"updatedAt\" DROP DEFAULT"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"updatedAt\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Canvas",
+          "updatedAt"
+        ]
+      },
+      {
+        "description": "verify column \"updatedAt\" is NOT NULL",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3 AND \"is_nullable\" = $4)) AS \"result\"",
+        "params": [
+          "public",
+          "Canvas",
+          "updatedAt",
+          "NO"
+        ]
+      },
+      {
+        "description": "verify column \"updatedAt\" has no default after temporary default removal",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3 AND \"column_default\" IS NOT NULL)) AS \"result\"",
+        "params": [
+          "public",
+          "Canvas",
+          "updatedAt"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "column.Canvas.workspaceId",
+    "label": "Add column workspaceId to Canvas",
+    "summary": "Adds column workspaceId to table Canvas",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "workspaceId",
+        "table": "Canvas"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"workspaceId\" is missing",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Canvas",
+          "workspaceId"
+        ]
+      },
+      {
+        "description": "ensure table \"Canvas\" is empty before adding NOT NULL column without default",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"public\".\"Canvas\" LIMIT 1) AS \"result\"",
+        "params": [],
+        "meta": {
+          "requiredColumn": {
+            "table": "Canvas",
+            "column": "workspaceId",
+            "reason": "newField"
+          }
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add column \"workspaceId\"",
+        "sql": "ALTER TABLE \"public\".\"Canvas\" ADD COLUMN \"workspaceId\" text NOT NULL"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"workspaceId\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Canvas",
+          "workspaceId"
+        ]
+      },
+      {
+        "description": "verify column \"workspaceId\" is NOT NULL",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3 AND \"is_nullable\" = $4)) AS \"result\"",
+        "params": [
+          "public",
+          "Canvas",
+          "workspaceId",
+          "NO"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "column.Doc.updatedAt",
+    "label": "Add column updatedAt to Doc",
+    "summary": "Adds column updatedAt to table Doc",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "Doc"
+      }
+    },
+    "operationClass": "additive",
+    "precheck": [
+      {
+        "description": "ensure column \"updatedAt\" is missing",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Doc",
+          "updatedAt"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add column \"updatedAt\"",
+        "sql": "ALTER TABLE \"public\".\"Doc\" ADD COLUMN \"updatedAt\" timestamptz DEFAULT ('epoch') NOT NULL"
+      },
+      {
+        "description": "drop temporary default from column \"updatedAt\"",
+        "sql": "ALTER TABLE \"public\".\"Doc\" ALTER COLUMN \"updatedAt\" DROP DEFAULT"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"updatedAt\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Doc",
+          "updatedAt"
+        ]
+      },
+      {
+        "description": "verify column \"updatedAt\" is NOT NULL",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3 AND \"is_nullable\" = $4)) AS \"result\"",
+        "params": [
+          "public",
+          "Doc",
+          "updatedAt",
+          "NO"
+        ]
+      },
+      {
+        "description": "verify column \"updatedAt\" has no default after temporary default removal",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3 AND \"column_default\" IS NOT NULL)) AS \"result\"",
+        "params": [
+          "public",
+          "Doc",
+          "updatedAt"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "column.Doc.workspaceId",
+    "label": "Add column workspaceId to Doc",
+    "summary": "Adds column workspaceId to table Doc",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "workspaceId",
+        "table": "Doc"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"workspaceId\" is missing",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Doc",
+          "workspaceId"
+        ]
+      },
+      {
+        "description": "ensure table \"Doc\" is empty before adding NOT NULL column without default",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"public\".\"Doc\" LIMIT 1) AS \"result\"",
+        "params": [],
+        "meta": {
+          "requiredColumn": {
+            "table": "Doc",
+            "column": "workspaceId",
+            "reason": "newField"
+          }
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "add column \"workspaceId\"",
+        "sql": "ALTER TABLE \"public\".\"Doc\" ADD COLUMN \"workspaceId\" text NOT NULL"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"workspaceId\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Doc",
+          "workspaceId"
+        ]
+      },
+      {
+        "description": "verify column \"workspaceId\" is NOT NULL",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3 AND \"is_nullable\" = $4)) AS \"result\"",
+        "params": [
+          "public",
+          "Doc",
+          "workspaceId",
+          "NO"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "column.Workspace.updatedAt",
+    "label": "Add column updatedAt to Workspace",
+    "summary": "Adds column updatedAt to table Workspace",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "Workspace"
+      }
+    },
+    "operationClass": "additive",
+    "precheck": [
+      {
+        "description": "ensure column \"updatedAt\" is missing",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Workspace",
+          "updatedAt"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add column \"updatedAt\"",
+        "sql": "ALTER TABLE \"public\".\"Workspace\" ADD COLUMN \"updatedAt\" timestamptz DEFAULT ('epoch') NOT NULL"
+      },
+      {
+        "description": "drop temporary default from column \"updatedAt\"",
+        "sql": "ALTER TABLE \"public\".\"Workspace\" ALTER COLUMN \"updatedAt\" DROP DEFAULT"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"updatedAt\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Workspace",
+          "updatedAt"
+        ]
+      },
+      {
+        "description": "verify column \"updatedAt\" is NOT NULL",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3 AND \"is_nullable\" = $4)) AS \"result\"",
+        "params": [
+          "public",
+          "Workspace",
+          "updatedAt",
+          "NO"
+        ]
+      },
+      {
+        "description": "verify column \"updatedAt\" has no default after temporary default removal",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3 AND \"column_default\" IS NOT NULL)) AS \"result\"",
+        "params": [
+          "public",
+          "Workspace",
+          "updatedAt"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.Canvas.Canvas_workspaceId_key",
+    "label": "Add unique constraint on \"Canvas\" (workspaceId)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "Canvas_workspaceId_key",
+        "table": "Canvas"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"Canvas_workspaceId_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Canvas_workspaceId_key",
+          "public",
+          "\"public\".\"Canvas\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"Canvas_workspaceId_key\"",
+        "sql": "ALTER TABLE \"public\".\"Canvas\" ADD CONSTRAINT \"Canvas_workspaceId_key\" UNIQUE (\"workspaceId\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"Canvas_workspaceId_key\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Canvas_workspaceId_key",
+          "public",
+          "\"public\".\"Canvas\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.Doc.Doc_workspaceId_key",
+    "label": "Add unique constraint on \"Doc\" (workspaceId)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "Doc_workspaceId_key",
+        "table": "Doc"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"Doc_workspaceId_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Doc_workspaceId_key",
+          "public",
+          "\"public\".\"Doc\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"Doc_workspaceId_key\"",
+        "sql": "ALTER TABLE \"public\".\"Doc\" ADD CONSTRAINT \"Doc_workspaceId_key\" UNIQUE (\"workspaceId\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"Doc_workspaceId_key\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Doc_workspaceId_key",
+          "public",
+          "\"public\".\"Doc\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "checkConstraint.Workspace.Workspace_status_check_04914b68",
+    "label": "Add check constraint \"Workspace_status_check_04914b68\" on \"Workspace\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "checkConstraint",
+        "name": "Workspace_status_check_04914b68",
+        "table": "Workspace"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"Workspace_status_check_04914b68\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Workspace_status_check_04914b68",
+          "public",
+          "\"public\".\"Workspace\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add check constraint \"Workspace_status_check_04914b68\"",
+        "sql": "ALTER TABLE \"public\".\"Workspace\" ADD CONSTRAINT \"Workspace_status_check_04914b68\" CHECK (\"status\" IN ('PLANNING', 'IN_PROGRESS', 'IN_REVIEW', 'DONE'))"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"Workspace_status_check_04914b68\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Workspace_status_check_04914b68",
+          "public",
+          "\"public\".\"Workspace\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.Workspace.Workspace_shareToken_key",
+    "label": "Add unique constraint on \"Workspace\" (shareToken)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "Workspace_shareToken_key",
+        "table": "Workspace"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"Workspace_shareToken_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Workspace_shareToken_key",
+          "public",
+          "\"public\".\"Workspace\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"Workspace_shareToken_key\"",
+        "sql": "ALTER TABLE \"public\".\"Workspace\" ADD CONSTRAINT \"Workspace_shareToken_key\" UNIQUE (\"shareToken\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"Workspace_shareToken_key\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Workspace_shareToken_key",
+          "public",
+          "\"public\".\"Workspace\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.AgentPrompt.AgentPrompt_ownerId_createdAt_idx_ffd2310a",
+    "label": "Create index \"AgentPrompt_ownerId_createdAt_idx_ffd2310a\" on \"AgentPrompt\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "AgentPrompt_ownerId_createdAt_idx_ffd2310a",
+        "table": "AgentPrompt"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"AgentPrompt_ownerId_createdAt_idx_ffd2310a\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"AgentPrompt_ownerId_createdAt_idx_ffd2310a\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"AgentPrompt_ownerId_createdAt_idx_ffd2310a\"",
+        "sql": "CREATE INDEX \"AgentPrompt_ownerId_createdAt_idx_ffd2310a\" ON \"public\".\"AgentPrompt\" (\"ownerId\", \"createdAt\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"AgentPrompt_ownerId_createdAt_idx_ffd2310a\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"AgentPrompt_ownerId_createdAt_idx_ffd2310a\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.AgentPrompt.AgentPrompt_workspaceId_idx_ba65f874",
+    "label": "Create index \"AgentPrompt_workspaceId_idx_ba65f874\" on \"AgentPrompt\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "AgentPrompt_workspaceId_idx_ba65f874",
+        "table": "AgentPrompt"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"AgentPrompt_workspaceId_idx_ba65f874\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"AgentPrompt_workspaceId_idx_ba65f874\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"AgentPrompt_workspaceId_idx_ba65f874\"",
+        "sql": "CREATE INDEX \"AgentPrompt_workspaceId_idx_ba65f874\" ON \"public\".\"AgentPrompt\" (\"workspaceId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"AgentPrompt_workspaceId_idx_ba65f874\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"AgentPrompt_workspaceId_idx_ba65f874\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Workspace.Workspace_clerkOrgId_idx_865e99ac",
+    "label": "Create index \"Workspace_clerkOrgId_idx_865e99ac\" on \"Workspace\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Workspace_clerkOrgId_idx_865e99ac",
+        "table": "Workspace"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Workspace_clerkOrgId_idx_865e99ac\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Workspace_clerkOrgId_idx_865e99ac\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Workspace_clerkOrgId_idx_865e99ac\"",
+        "sql": "CREATE INDEX \"Workspace_clerkOrgId_idx_865e99ac\" ON \"public\".\"Workspace\" (\"clerkOrgId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Workspace_clerkOrgId_idx_865e99ac\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Workspace_clerkOrgId_idx_865e99ac\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.AgentPrompt.AgentPrompt_workspaceId_fkey",
+    "label": "Add foreign key \"AgentPrompt_workspaceId_fkey\" on \"AgentPrompt\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "AgentPrompt_workspaceId_fkey",
+        "table": "AgentPrompt"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"AgentPrompt_workspaceId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "AgentPrompt_workspaceId_fkey",
+          "public",
+          "\"public\".\"AgentPrompt\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"AgentPrompt_workspaceId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"AgentPrompt\"\nADD CONSTRAINT \"AgentPrompt_workspaceId_fkey\"\nFOREIGN KEY (\"workspaceId\")\nREFERENCES \"public\".\"Workspace\" (\"id\")\nON DELETE SET NULL"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"AgentPrompt_workspaceId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "AgentPrompt_workspaceId_fkey",
+          "public",
+          "\"public\".\"AgentPrompt\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.Canvas.Canvas_workspaceId_fkey",
+    "label": "Add foreign key \"Canvas_workspaceId_fkey\" on \"Canvas\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "Canvas_workspaceId_fkey",
+        "table": "Canvas"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"Canvas_workspaceId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Canvas_workspaceId_fkey",
+          "public",
+          "\"public\".\"Canvas\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"Canvas_workspaceId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"Canvas\"\nADD CONSTRAINT \"Canvas_workspaceId_fkey\"\nFOREIGN KEY (\"workspaceId\")\nREFERENCES \"public\".\"Workspace\" (\"id\")\nON DELETE CASCADE"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"Canvas_workspaceId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Canvas_workspaceId_fkey",
+          "public",
+          "\"public\".\"Canvas\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.Doc.Doc_workspaceId_fkey",
+    "label": "Add foreign key \"Doc_workspaceId_fkey\" on \"Doc\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "Doc_workspaceId_fkey",
+        "table": "Doc"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"Doc_workspaceId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Doc_workspaceId_fkey",
+          "public",
+          "\"public\".\"Doc\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"Doc_workspaceId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"Doc\"\nADD CONSTRAINT \"Doc_workspaceId_fkey\"\nFOREIGN KEY (\"workspaceId\")\nREFERENCES \"public\".\"Workspace\" (\"id\")\nON DELETE CASCADE"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"Doc_workspaceId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Doc_workspaceId_fkey",
+          "public",
+          "\"public\".\"Doc\""
+        ]
+      }
+    ]
+  }
+]
