@@ -7,6 +7,7 @@ import AppShell from "@/components/AppShell";
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/ui/themes";
 import { UpgradeDialogProvider } from "@/components/UpgradeDialog";
+import { Suspense } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -46,7 +47,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <body className="min-h-full flex flex-col">
           <TooltipProvider>
             <UpgradeDialogProvider>
-              <AppShell>{children}</AppShell>
+              <Suspense fallback={children}>
+                <AppShell>{children}</AppShell>
+              </Suspense>
             </UpgradeDialogProvider>
           </TooltipProvider>
           <Toaster richColors />

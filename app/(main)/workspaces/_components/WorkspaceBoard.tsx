@@ -4,13 +4,24 @@ import type { Models } from "@/src/prisma/contract.d";
 
 import { useState } from "react";
 import { toast } from "sonner";
-import { MoreHorizontal, Trash2 } from "lucide-react";
+import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 import { DragDropContext, Draggable, Droppable, type DropResult } from "@hello-pangea/dnd";
-import { deleteWorkspace, moveWorkspace } from "@/actions/workspace";
+import { deleteWorkspace, moveWorkspace, updateWorkspace } from "@/actions/workspace";
 import { useFetch } from "@/hooks/use-fetch";
 import { WORKSPACE_STATUSES } from "@/lib/workspace-status";
 import { WorkspaceCard, type WorkspaceCardData } from "@/components/WorkspaceCard";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -56,11 +67,22 @@ export function WorkspaceBoard({ workspaces }: { workspaces: BoardWorkspace[] })
   // `selected` outlives the open flag, so dialog text doesn't blank out during the close animation.
   const [selected, setSelected] = useState<BoardWorkspace | null>(null);
   const [openDialog, setOpenDialog] = useState(false);
+  const [openEditDialog, setOpenEditDialog] = useState(false);
+  const [editName, setEditName] = useState("");
+  const [editDescription, setEditDescription] = useState("");
   const { fn: deleteWorkspaceFn, loading: isDeleting } = useFetch(deleteWorkspace);
+  const { fn: updateWorkspaceFn, loading: isUpdating } = useFetch(updateWorkspace);
 
   const openDeleteDialog = (workspace: BoardWorkspace) => {
     setSelected(workspace);
     setOpenDialog(true);
+  };
+
+  const openEditWorkspaceDialog = (workspace: BoardWorkspace) => {
+    setSelected(workspace);
+    setEditName(workspace.name);
+    setEditDescription(workspace.description ?? "");
+    setOpenEditDialog(true);
   };
 
   const handleDelete = async (e: React.MouseEvent) => {
@@ -69,6 +91,29 @@ export function WorkspaceBoard({ workspaces }: { workspaces: BoardWorkspace[] })
     if (!selected) return;
     await deleteWorkspaceFn(selected.id);
     setOpenDialog(false);
+  };
+
+  const handleUpdate = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (!selected) return;
+    const name = editName.trim();
+    if (!name) return;
+
+    const updated = await updateWorkspaceFn(
+      selected.id,
+      name,
+      editDescription,
+    );
+    if (!updated) return;
+
+    setItems((current) =>
+      current.map((workspace) =>
+        workspace.id === selected.id
+          ? { ...workspace, name, description: editDescription.trim() || null }
+          : workspace,
+      ),
+    );
+    setOpenEditDialog(false);
   };
 
   const handleDragEnd = async ({ draggableId, source, destination }: DropResult) => {
@@ -134,6 +179,10 @@ export function WorkspaceBoard({ workspaces }: { workspaces: BoardWorkspace[] })
                                       <Trash2 className="size-4" />
                                       Delete
                                     </DropdownMenuItem>
+                                    <DropdownMenuItem onSelect={() => openEditWorkspaceDialog(workspace)}>
+                                      <Pencil className="size-4" />
+                                      Edit
+                                    </DropdownMenuItem>
                                   </DropdownMenuContent>
                                 </DropdownMenu>
                               }
@@ -167,6 +216,53 @@ export function WorkspaceBoard({ workspaces }: { workspaces: BoardWorkspace[] })
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+      <Dialog open={openEditDialog} onOpenChange={setOpenEditDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Edit workspace</DialogTitle>
+            <DialogDescription>
+              Update the name and description for this workspace.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="edit-workspace-name">Name</Label>
+              <Input
+                id="edit-workspace-name"
+                value={editName}
+                onChange={(event) => setEditName(event.target.value)}
+                autoFocus
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="edit-workspace-description">
+                Description <span className="text-muted-foreground">(Optional)</span>
+              </Label>
+              <Textarea
+                id="edit-workspace-description"
+                value={editDescription}
+                onChange={(event) => setEditDescription(event.target.value)}
+                rows={3}
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setOpenEditDialog(false)}
+              disabled={isUpdating ?? false}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleUpdate}
+              disabled={(isUpdating ?? false) || !editName.trim()}
+            >
+              {isUpdating ? "Saving..." : "Confirm"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </DragDropContext>
   );
 }

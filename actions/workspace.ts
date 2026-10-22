@@ -113,3 +113,28 @@ export async function moveWorkspace(
   });
   revalidateWorkspaceLists();
 }
+
+export async function updateWorkspace(
+  workspaceId: string,
+  name: string,
+  description?: string | null,
+) {
+  if (!(await canAccessWorkspace(workspaceId)))
+    throw new Error("Workspace not found");
+
+  const trimmedName = name.trim();
+  if (!trimmedName) throw new Error("Workspace name is required");
+
+  await prisma.orm.public.Workspace.where({
+    id: workspaceId,
+  }).update({
+    name: trimmedName,
+    ...(description !== undefined
+      ? { description: description?.trim() || null }
+      : {}),
+  });
+
+  revalidateWorkspaceLists();
+  revalidatePath(`/workspace/${workspaceId}`);
+  return true;
+}
