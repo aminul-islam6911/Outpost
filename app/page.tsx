@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { FeatureMock } from "./_components/FeatureMocks";
 import { landingCopy } from "./_data/landing";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { PricingTable } from "@clerk/nextjs";
+import { ClientPricingTable } from "@/components/ClientPricingTable";
 
 const PRICING_TAB =
   "rounded-full px-5 py-1.5 data-active:bg-primary data-active:text-primary-foreground dark:data-active:bg-primary dark:data-active:text-primary-foreground";
@@ -253,12 +253,12 @@ export default function Home() {
             </TabsList>
             <TabsContent value="user" className="w-full">
               <div className="mx-auto w-full max-w-5xl">
-                <PricingTable for="user" />
+                <ClientPricingTable for="user" />
               </div>
             </TabsContent>
             <TabsContent value="organization" className="w-full">
               <div className="mx-auto w-full max-w-5xl">
-                <PricingTable for="organization" />
+                <ClientPricingTable for="organization" />
               </div>
             </TabsContent>
           </Tabs>

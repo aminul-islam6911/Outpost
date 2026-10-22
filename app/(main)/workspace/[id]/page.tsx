@@ -13,6 +13,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { connection } from "next/server";
 import { Suspense } from "react";
+import CanvasEditor from "./_components/CanvasEditor";
+import type { TLEditorSnapshot } from "tldraw";
+import type { Block } from "@blocknote/core";
+import { DocEditor } from "../../../../components/DocEditorLoader";
 
 type ViewMode = "doc" | "canvas" | "both";
 
@@ -34,6 +38,8 @@ async function WorkspaceContent({
 
   const workspace = await prisma.orm.public.Workspace.where({ id })
     .select("name")
+    .include("canvas", (canvas) => canvas.select("content"))
+    .include("doc", (doc) => doc.select("content", "yjsState"))
     .first();
 
   if (!workspace) notFound();
@@ -95,17 +101,27 @@ async function WorkspaceContent({
         >
           {showDoc && (
             <ResizablePanel defaultSize={25} minSize={20}>
-              <div className="p-6 text-sm text-muted-foreground">
-                Doc Coming Soon
-              </div>
+              <DocEditor
+                key={id}
+                workspaceId={id}
+                initialContent={workspace.doc?.content as Block[] | null}
+                initialState={
+                  workspace.doc?.yjsState
+                    ? Buffer.from(workspace.doc.yjsState).toString("base64")
+                    : null
+                }
+              />
             </ResizablePanel>
           )}
           {showDoc && showCanvas && <ResizableHandle withHandle />}
           {showCanvas && (
             <ResizablePanel defaultSize={75} minSize={20}>
-              <div className="p-6 text-sm text-muted-foreground">
-                Canvas Coming Soon
-              </div>
+              <CanvasEditor
+                workspaceId={id}
+                initialSnapshot={
+                  workspace.canvas?.content as TLEditorSnapshot | null
+                }
+              />
             </ResizablePanel>
           )}
         </ResizablePanelGroup>

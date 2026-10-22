@@ -1,6 +1,7 @@
 "use client";
 
-import { PricingTable, useAuth } from "@clerk/nextjs";
+import { useAuth } from "@clerk/nextjs";
+import { ClientPricingTable } from "@/components/ClientPricingTable";
 import React, { createContext, ReactNode, useContext, useState } from "react";
 import {
   Dialog,
@@ -47,7 +48,7 @@ export const UpgradeDialogProvider = ({
               <DialogDescription>{reason.description}</DialogDescription>
             )}
           </DialogHeader>
-          <PricingTable for={orgId ? "organization" : "user"} />
+          <ClientPricingTable for={orgId ? "organization" : "user"} />
         </DialogContent>
       </Dialog>
     </UpgradeDialogContext.Provider>
