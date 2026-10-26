@@ -22,9 +22,11 @@
 .claude
 .cursor
 .devin
+.codex
 
 # production
 /build
+graphify-out
 
 # misc
 .DS_Store

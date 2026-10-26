@@ -88,12 +88,12 @@ export const landingCopy = {
     eyebrow: "Straightforward plans",
     heading: "Plans for how you build.",
     description:
-      "Choose a plan that fits how you work, whether you’re building solo or with your team.",
+      "Choose a plan that fits how you work, whether you're building solo or with your team.",
 
   },
   closing: {
     eyebrow: "Your next idea starts here",
-    heading: "Let’s see where you take it.",
+    heading: "Let's see where you take it.",
     description:
       "Bring your team, bring your questions, and start building in Outpost.",
     action: "Start Building free",
